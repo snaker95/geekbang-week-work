@@ -104,7 +104,7 @@ func (rs *Rows) nextLocked() (doClose, ok bool) {
 1. go 官方制定了 database 的标准定义, 至于数据库驱动, 大多是有第三方完成;
 2. 抛开数据库驱动实现, 该错误就是指**未查询到数据集**
 
-###  发生sql.ErrNoRows 的时候，是否应该 Wrap 这个 error，抛给上层
+###  发生sql.ErrNoRows，是否应该 Wrap 这个 error，抛给上层?
 
 * 假设需要抛给上层，不应该 **Wrap**这个 **error**
 
