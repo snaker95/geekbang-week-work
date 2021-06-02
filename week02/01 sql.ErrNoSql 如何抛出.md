@@ -134,10 +134,8 @@ package dao
 import (
 	"SnakerGin/config"
 	"context"
-	"fmt"
-  "github.com/pkg/errors"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 	"time"
 )
 
@@ -148,7 +146,7 @@ var (
 
 // Codes 表结构
 type Codes struct {
-	ID int64 `json:"-"` // 忽略主键, 业务场景下不需要
+	ID         int64     `json:"-"` // 忽略主键, 业务场景下不需要
 	Msg        string    `json:"msg"`
 	RecoverMsg string    `json:"recover_msg"`
 	CreatedAt  time.Time `json:"created_at"`
@@ -164,8 +162,8 @@ func (Codes) TableName() string {
 func (m *Codes) GetListOrNil(ctx context.Context, where *WhereCondition, limit, offset int, order ...string) ([]*Codes, error) {
 	var list []*Codes
 	db := getListHandler(ctx, where, limit, offset, order, &list)
-  // 这里: 和 sql.ErrNotRows 是一样的道理
-  // 不将ErrNotRows 返回上层
+	// 这里: 和 sql.ErrNotRows 是一样的道理
+	// 不将ErrNotRows 返回上层
 	if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
@@ -175,12 +173,12 @@ func (m *Codes) GetListOrNil(ctx context.Context, where *WhereCondition, limit, 
 // GetListOrErr 查询列表, 空列表返回 err
 func (m *Codes) GetListOrErr(ctx context.Context, where *WhereCondition, limit, offset int, order ...string) ([]*Codes, error) {
 	var list []*Codes
-  db := getListHandler(ctx, where, limit, offset, order, &list)
-  return list, errors.WithMassage(db.Error, "Dao: ")
+	db := getListHandler(ctx, where, limit, offset, order, &list)
+	return list, errors.WithMassage(db.Error, "Dao: ")
 }
 
 func (m *Codes) getListHandler(ctx context.Context, where *WhereCondition, limit, offset int, order []string, list interface{}) *gorm.DB {
-  db := config.GetDBMaster().Model(m)
+	db := config.GetDBMaster().Model(m)
 	if where != nil {
 		db = db.Where(where.Query, where.Args...)
 	}
@@ -188,7 +186,7 @@ func (m *Codes) getListHandler(ctx context.Context, where *WhereCondition, limit
 	if len(order) > 0 && len(order[0]) > 0 {
 		db = db.Order(order[0])
 	}
-  return db.Find(list)
+	return db.Find(list)
 }
 ```
 
