@@ -167,7 +167,7 @@ func (m *Codes) GetListOrNil(ctx context.Context, where *WhereCondition, limit, 
 	if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
-	return list, db.Error
+	return list, errors.WithMassage(db.Error, "Dao: ")
 }
 
 // GetListOrErr 查询列表, 空列表返回 err
