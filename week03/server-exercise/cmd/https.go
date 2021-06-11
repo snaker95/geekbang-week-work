@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/tools/go/analysis/passes/stringintconv/testdata/src/a"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,10 +18,14 @@ import (
 @File : https
 @Software: GoLand
 */
-
+type ab struct{
+	A int
+}
 func main() {
 	// 注册路由
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// var a *ab
+		// fmt.Printf("R%v", a.A)
 		fmt.Fprintln(w, "Hello server --- ", r.Host)
 	})
 
@@ -45,7 +50,7 @@ func run() error {
 	// 监听退出信号
 	signChan := make(chan os.Signal, 1)
 	defer close(signChan)
-	signal.Notify(signChan, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(signChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 	errG.Go(func() error {
 		select {
 		case <-signChan:
