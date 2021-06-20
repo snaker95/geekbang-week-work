@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/tools/go/analysis/passes/stringintconv/testdata/src/a"
 	"net/http"
 	"os"
 	"os/signal"
