@@ -33,20 +33,6 @@ func init() {
 func main() {
 	// 初始化上下文
 	ctx := context.Background()
-	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		hello := new(service.HellService)
-		resp, err := hello.SayHello(ctx, &v1.HelloReq{Name: "9900"})
-		fmt.Fprintln(w, "Hello server --- ", resp, err)
-	})
-	http.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
-		hello := &service.HellService{
-			Uc: &biz.HelloUsecase{
-				Repo: &data.HelloRepo{},
-			},
-		}
-		resp, err := hello.GetHello(ctx, &v1.GetHelloReq{Name: "get"})
-		fmt.Fprintln(w, "Hello server get --- ", resp, err)
-	})
 
 	// 加载配置
 	var config = new(conf.Config)
@@ -55,7 +41,7 @@ func main() {
 	}
 	fmt.Printf("conf = %v", config)
 	// 使用 wire 依赖注入, 获取启动入口
-	app := initApp(ctx, config.Server)
+	app := initApp(ctx, config.Server, config.Data)
 	if err := app.run(); err != nil {
 		panic(fmt.Sprintf("app.run err=%+v", err))
 	}
@@ -66,23 +52,40 @@ func main() {
 type App struct {
 	ctx   context.Context
 	https []*server.HttpServer
+	dbs   *conf.Data
 }
 
 // 初始化 app
-func initApp(ctx context.Context, servers *conf.Server) *App {
+func initApp(ctx context.Context, servers *conf.Server, dbs *conf.Data) *App {
 	httpSrv := []*server.HttpServer{
 		server.NewHttpServer(servers.Http.Addr),
 	}
 	app := &App{
 		ctx:   ctx,
 		https: httpSrv,
+		dbs:   dbs,
 	}
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		hello := new(service.HellService)
+		resp, err := hello.SayHello(ctx, &v1.HelloReq{Name: "9900"})
+		fmt.Fprintln(w, "Hello server --- ", resp, err)
+	})
+	http.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
+		d, err := data.NewData(app.dbs)
+		if err != nil {
+			panic(fmt.Sprintf("data.NewData err=%v", err))
+		}
+		hello := service.NewHellService(biz.NewHelloUsecase(data.NewHelloRepo(d)))
+		resp, err := hello.GetHello(ctx, &v1.GetHelloReq{Name: "get"})
+		fmt.Fprintln(w, "Hello server get --- ", resp, err)
+	})
 	return app
 }
 
-func (a *App) run() error {
-	servers := a.https
-	errG, ctx := errgroup.WithContext(a.ctx)
+func (app *App) run() error {
+	servers := app.https
+	errG, ctx := errgroup.WithContext(app.ctx)
+
 	// 循环启动服务
 	for i := range servers {
 		s := servers[i]

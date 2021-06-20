@@ -14,7 +14,13 @@ import (
 */
 
 type HellService struct {
-	Uc *biz.HelloUsecase
+	uc *biz.HelloUsecase
+}
+
+func NewHellService(uc *biz.HelloUsecase) *HellService {
+	return &HellService{
+		uc: uc,
+	}
 }
 
 func (s *HellService) SayHello(ctx context.Context, in *v1.HelloReq) (*v1.HelloResp, error) {
@@ -26,7 +32,7 @@ func (s *HellService) GetHello(ctx context.Context, in *v1.GetHelloReq) (*v1.Get
 	req := map[string]interface{}{
 		"name": in.Name,
 	}
-	hellos, err := s.Uc.Get(ctx, req)
+	hellos, err := s.uc.Get(ctx, req)
 	resp := &v1.GetHelloResp{
 		List: make([]*v1.HelloOne, 0, len(hellos)),
 	}

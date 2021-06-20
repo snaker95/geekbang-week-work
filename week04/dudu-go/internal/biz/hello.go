@@ -20,13 +20,19 @@ type HelloRepo interface {
 }
 
 type HelloUsecase struct {
-	Repo HelloRepo
+	repo HelloRepo
+}
+
+func NewHelloUsecase(repo HelloRepo) *HelloUsecase {
+	return &HelloUsecase{
+		repo: repo,
+	}
 }
 
 func (hu *HelloUsecase) Create(ctx context.Context, hello *Hello) error {
-	return hu.Repo.SaveHello(ctx, hello)
+	return hu.repo.SaveHello(ctx, hello)
 }
 
 func (hu *HelloUsecase) Get(ctx context.Context, where map[string]interface{}) ([]*Hello, error) {
-	return hu.Repo.GetHellos(ctx, where)
+	return hu.repo.GetHellos(ctx, where)
 }
