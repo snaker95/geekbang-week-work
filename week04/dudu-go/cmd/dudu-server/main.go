@@ -5,7 +5,9 @@ import (
 	"flag"
 	"fmt"
 	v1 "github.com/geekbang-week-work/week04/dudu-go/api/dudu-go/v1"
+	"github.com/geekbang-week-work/week04/dudu-go/internal/biz"
 	"github.com/geekbang-week-work/week04/dudu-go/internal/conf"
+	"github.com/geekbang-week-work/week04/dudu-go/internal/data"
 	"github.com/geekbang-week-work/week04/dudu-go/internal/server"
 	"github.com/geekbang-week-work/week04/dudu-go/internal/service"
 	"golang.org/x/sync/errgroup"
@@ -33,10 +35,18 @@ func main() {
 	ctx := context.Background()
 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		hello := new(service.HellService)
-		resp, err := hello.SayHello(ctx, v1.HelloReq{Name:"oooxxx"})
+		resp, err := hello.SayHello(ctx, &v1.HelloReq{Name: "9900"})
 		fmt.Fprintln(w, "Hello server --- ", resp, err)
 	})
-
+	http.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
+		hello := &service.HellService{
+			Uc: &biz.HelloUsecase{
+				Repo: &data.HelloRepo{},
+			},
+		}
+		resp, err := hello.GetHello(ctx, &v1.GetHelloReq{Name: "get"})
+		fmt.Fprintln(w, "Hello server get --- ", resp, err)
+	})
 
 	// 加载配置
 	var config = new(conf.Config)
