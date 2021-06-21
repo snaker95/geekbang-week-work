@@ -75,7 +75,10 @@ func initApp(ctx context.Context, servers *conf.Server, dbs *conf.Data) *App {
 		if err != nil {
 			panic(fmt.Sprintf("data.NewData err=%v", err))
 		}
-		hello := service.NewHellService(biz.NewHelloUsecase(data.NewHelloRepo(d)))
+		repo := data.NewHelloRepo(d)
+		uc := biz.NewHelloUsecase(repo)
+		hello := service.NewHellService(uc)
+
 		resp, err := hello.GetHello(ctx, &v1.GetHelloReq{Name: "get"})
 		fmt.Fprintln(w, "Hello server get --- ", resp, err)
 	})

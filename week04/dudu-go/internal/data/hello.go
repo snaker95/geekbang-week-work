@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"github.com/geekbang-week-work/week04/dudu-go/internal/biz"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -31,7 +32,7 @@ func NewHelloRepo(data *Data) biz.HelloRepo {
 }
 
 func (hr *helloRepo) SaveHello(ctx context.Context, biz *biz.Hello) error {
-	// biz -> hello 数据深度拷贝(转化)
+	// biz(DO) -> hello(PO) 数据深度拷贝(转化)
 
 	// 数据数操作 todo
 	// hr.dbHandler.Insert()
@@ -42,6 +43,7 @@ func (hr *helloRepo) SaveHello(ctx context.Context, biz *biz.Hello) error {
 func (hr *helloRepo) GetHellos(ctx context.Context, where map[string]interface{}) ([]*biz.Hello, error) {
 	// 数据库操作 todo
 
-	// hello -> biz 数据深度拷贝(转化)
-	return nil, nil
+	// hello(PO) -> biz(DO) 数据深度拷贝(转化)
+	var err error
+	return nil, errors.Wrap(err, "data:")
 }

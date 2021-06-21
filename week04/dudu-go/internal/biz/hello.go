@@ -1,6 +1,9 @@
 package biz
 
-import "context"
+import (
+	"context"
+	"github.com/pkg/errors"
+)
 
 /*
 @Time : 2021/6/20 下午5:44
@@ -30,9 +33,10 @@ func NewHelloUsecase(repo HelloRepo) *HelloUsecase {
 }
 
 func (hu *HelloUsecase) Create(ctx context.Context, hello *Hello) error {
-	return hu.repo.SaveHello(ctx, hello)
+	return errors.WithMessage(hu.repo.SaveHello(ctx, hello), "biz: ")
 }
 
 func (hu *HelloUsecase) Get(ctx context.Context, where map[string]interface{}) ([]*Hello, error) {
-	return hu.repo.GetHellos(ctx, where)
+	resp, err := hu.repo.GetHellos(ctx, where)
+	return resp, errors.WithMessage(err, "biz")
 }

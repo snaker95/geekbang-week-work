@@ -28,7 +28,7 @@ func (s *HellService) SayHello(ctx context.Context, in *v1.HelloReq) (*v1.HelloR
 }
 
 func (s *HellService) GetHello(ctx context.Context, in *v1.GetHelloReq) (*v1.GetHelloResp, error) {
-	// pto -> po
+	// dto -> do
 	req := map[string]interface{}{
 		"name": in.Name,
 	}
@@ -36,7 +36,7 @@ func (s *HellService) GetHello(ctx context.Context, in *v1.GetHelloReq) (*v1.Get
 	resp := &v1.GetHelloResp{
 		List: make([]*v1.HelloOne, 0, len(hellos)),
 	}
-	// hellos -> resp 拷贝
+	// hellos(DO) -> resp(DTO) 拷贝
 	// 示例: 简单处理
 	for i := range hellos {
 		resp.List = append(resp.List, &v1.HelloOne{
