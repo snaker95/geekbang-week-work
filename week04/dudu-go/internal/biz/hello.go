@@ -12,7 +12,7 @@ import (
 @Software: GoLand
 */
 
-// po 数据层
+// DO 数据层
 type Hello struct {
 	Name string `json:"name"`
 }

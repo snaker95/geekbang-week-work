@@ -15,7 +15,7 @@ import (
 
 var helloTable = "hello"
 
-// Do 数据层
+// PO 数据层
 type hello struct {
 	Id   int64  `json:"id" db:"name" ak:"true"`
 	Name string `json:"name" db:"name"`
