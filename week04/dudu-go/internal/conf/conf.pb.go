@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0
 // 	protoc        v3.17.0
-// source: internal/conf/conf.proto
+// source: grpc/conf/conf.proto
 
 package conf
 
@@ -509,21 +509,21 @@ func file_internal_conf_conf_proto_rawDescGZIP() []byte {
 
 var file_internal_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_internal_conf_conf_proto_goTypes = []interface{}{
-	(*Config)(nil), // 0: internal.conf.Config
-	(*Server)(nil), // 1: internal.conf.Server
-	(*Http)(nil),   // 2: internal.conf.Http
-	(*Grpc)(nil),   // 3: internal.conf.Grpc
-	(*Data)(nil),   // 4: internal.conf.Data
-	(*DB)(nil),     // 5: internal.conf.DB
-	(*Redis)(nil),  // 6: internal.conf.Redis
+	(*Config)(nil), // 0: grpc.conf.Config
+	(*Server)(nil), // 1: grpc.conf.Server
+	(*Http)(nil),   // 2: grpc.conf.Http
+	(*Grpc)(nil),   // 3: grpc.conf.Grpc
+	(*Data)(nil),   // 4: grpc.conf.Data
+	(*DB)(nil),     // 5: grpc.conf.DB
+	(*Redis)(nil),  // 6: grpc.conf.Redis
 }
 var file_internal_conf_conf_proto_depIdxs = []int32{
-	1, // 0: internal.conf.Config.server:type_name -> internal.conf.Server
-	4, // 1: internal.conf.Config.data:type_name -> internal.conf.Data
-	2, // 2: internal.conf.Server.http:type_name -> internal.conf.Http
-	3, // 3: internal.conf.Server.grpc:type_name -> internal.conf.Grpc
-	5, // 4: internal.conf.Data.db:type_name -> internal.conf.DB
-	6, // 5: internal.conf.Data.redis:type_name -> internal.conf.Redis
+	1, // 0: grpc.conf.Config.server:type_name -> grpc.conf.Server
+	4, // 1: grpc.conf.Config.data:type_name -> grpc.conf.Data
+	2, // 2: grpc.conf.Server.http:type_name -> grpc.conf.Http
+	3, // 3: grpc.conf.Server.grpc:type_name -> grpc.conf.Grpc
+	5, // 4: grpc.conf.Data.db:type_name -> grpc.conf.DB
+	6, // 5: grpc.conf.Data.redis:type_name -> grpc.conf.Redis
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

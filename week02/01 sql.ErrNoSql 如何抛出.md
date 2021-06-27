@@ -169,6 +169,7 @@ func (m *Codes) GetListOrNil(ctx context.Context, where *WhereCondition, limit, 
 	}
 	return list, errors.WithMassage(db.Error, "Dao: ")
 }
+}
 
 // GetListOrErr 查询列表, 空列表返回 err
 func (m *Codes) GetListOrErr(ctx context.Context, where *WhereCondition, limit, offset int, order ...string) ([]*Codes, error) {

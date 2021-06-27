@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package internal.conf;
 
-option go_package = "kratos-learn/internal/conf;conf";
+option go_package = "kratos-learn/grpc/conf;conf";
 
 message Config {
     Server server = 1;

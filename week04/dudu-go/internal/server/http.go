@@ -24,6 +24,10 @@ func NewHttpServer(addr string) *HttpServer {
 	}
 }
 
+func (s *HttpServer) SetHandler(handler http.Handler) {
+	s.Handler = handler
+}
+
 func (s *HttpServer) Start(ctx context.Context) error {
 	if err := s.Server.ListenAndServe(); err != nil {
 		return err

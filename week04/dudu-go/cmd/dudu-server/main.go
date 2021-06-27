@@ -65,23 +65,6 @@ func initApp(ctx context.Context, servers *conf.Server, dbs *conf.Data) *App {
 		https: httpSrv,
 		dbs:   dbs,
 	}
-	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		hello := new(service.HellService)
-		resp, err := hello.SayHello(ctx, &v1.HelloReq{Name: "9900"})
-		fmt.Fprintln(w, "Hello server --- ", resp, err)
-	})
-	http.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
-		d, err := data.NewData(app.dbs)
-		if err != nil {
-			panic(fmt.Sprintf("data.NewData err=%v", err))
-		}
-		repo := data.NewHelloRepo(d)
-		uc := biz.NewHelloUsecase(repo)
-		hello := service.NewHellService(uc)
-
-		resp, err := hello.GetHello(ctx, &v1.GetHelloReq{Name: "get"})
-		fmt.Fprintln(w, "Hello server get --- ", resp, err)
-	})
 	return app
 }
 
@@ -91,7 +74,27 @@ func (app *App) run() error {
 
 	// 循环启动服务
 	for i := range servers {
+
 		s := servers[i]
+		mux := http.NewServeMux()
+		mux.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+			hello := new(service.HellService)
+			resp, err := hello.SayHello(ctx, &v1.HelloReq{Name: "9900"})
+			fmt.Fprintln(w, "Hello server --- ", resp, err)
+		})
+		mux.HandleFunc("/get", func(w http.ResponseWriter, r *http.Request) {
+			d, err := data.NewData(app.dbs)
+			if err != nil {
+				panic(fmt.Sprintf("data.NewData err=%v", err))
+			}
+			repo := data.NewHelloRepo(d)
+			uc := biz.NewHelloUsecase(repo)
+			hello := service.NewHellService(uc)
+
+			resp, err := hello.GetHello(ctx, &v1.GetHelloReq{Name: "get"})
+			fmt.Fprintln(w, "Hello server get --- ", resp, err)
+		})
+		s.SetHandler(mux)
 		errG.Go(func() error {
 			fmt.Println("httpServer start", s.Addr)
 			return s.Start(ctx)
